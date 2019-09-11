@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react'
 
-import { Principal, Text, Todo } from './style'
+import { Principal, Text, Todos, Filters } from './style'
+import ToDo from '../../components/Todo/'
+
+
 export default function Main() {
     const [text, setText] = useState('');
     const [todos, setTodos] = useState([]);
+    const [all, setAll] = useState('true');
+    const [important, setImportant] = useState(false);
+    const [not_important, setNotImportant] = useState(true);
 
     useEffect(() => {
         let allTodos = localStorage.getItem('todos');
@@ -11,11 +17,16 @@ export default function Main() {
             setTodos(JSON.parse(allTodos).data);
         }
     }, [])
+    function handleChange(e) {
+        if (e.keyCode === 13) {
+            handleClick()
+        } else {
+            setText(e.target.value);
+        }
+    }
     function handleClick(e) {
-        e.preventDefault();
         if (text) {
             if (localStorage.getItem('todos')) {
-                console.log(localStorage.getItem('todos'))
                 let { data } = JSON.parse(localStorage.getItem('todos'));
                 data.push({
                     id: data.length + 1,
@@ -26,7 +37,6 @@ export default function Main() {
                 localStorage.setItem('todos', JSON.stringify({ data }))
 
                 let allTodos = JSON.parse(localStorage.getItem('todos'))
-                console.log(allTodos);
 
                 setTodos(allTodos.data);
                 setText('')
@@ -43,35 +53,60 @@ export default function Main() {
                 setTodos(allTodos.data)
                 setText('')
             }
-        } else {
-            console.log(todos);
-
         }
     }
+    function handleImportant(id, e) {
+        let todoImportant = todos
+        for (let i = 0; i < todoImportant.length; i++) {
+            if (todoImportant[i].id === id) {
+                todoImportant[i].important = !todoImportant[i].important
+                break;
+            }
+        }
+        localStorage.setItem('todos', JSON.stringify({ data: todoImportant }))
 
+        setTodos(JSON.parse(localStorage.getItem('todos')).data);
+    }
+    function handleImportante(id, e) {
+        let importantes = todos.filter(todo => todo.important === true)
+
+        setTodos(importantes)
+    }
+    function handleAll(id, e) {
+        setTodos(JSON.parse(localStorage.getItem('todos')).data)
+    }
+    function handleNotImportant(id, e) {
+        let importantes = todos.filter(todo => todo.important === false)
+
+        setTodos(importantes)
+    }
     return (
         <Principal>
             <div style={{ gridColumnStart: '1' }}>
                 <h1>Add ToDo</h1>
-                <Text placeholder="Adicione todo" value={text} onChange={e => { setText(e.target.value) }} />
+                <Text placeholder="Adicione todo" value={text} onChange={handleChange} onKeyUp={handleChange} />
                 <button onClick={handleClick}>Adicionar ToDo</button>
 
             </div>
-            <Todo>
-                {todos.length ? todos.map(todo => {
+            <Todos>
+                {todos.map(todo => {
                     return (
-                        <content>
-                            <div>
-                                <p>{todo.text}</p>
-                            </div>
-                            <div>
-                                <p>{todo.importante ? "Importante" : ""}</p>
-                                <p>{todo.dono ? "Completo" : "Incompleto"}</p>
-                            </div>
-                        </content>
+                        <ToDo
+                            important={todo.important}
+                            text={todo.text}
+                            done={todo.done}
+                            id={todo.id}
+                            handleImportant={e => handleImportant(todo.id, e)}
+                            key={todo.id} />
                     )
-                }) : <p> Não possui todos </p>}
-            </Todo>
+                })}
+            </Todos>
+            <Filters>
+                <button onClick = {handleAll}>Todos</button>
+                <button onClick = {handleImportante}>Importantes</button>
+                <button onClick = {handleNotImportant}>Não Importantes</button>
+
+            </Filters>
         </Principal>
     )
 }

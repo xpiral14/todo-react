@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 
 export const Principal = styled.main`
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-59%, -50%);
+ 
     display: grid;
-    grid-template-columns: .25fr .75fr; 
+    grid-template-columns: .25fr .50fr .25fr; 
     width: 100%;
-    max-width: 800px;
+    margin: 0 auto;
+    max-width: 1000px;
     border: 1px solid black;
     padding: 10px;
     border-radius: 4px;
@@ -28,6 +26,8 @@ export const Principal = styled.main`
     }
 `
 export const Text = styled.textarea`
+    box-sizing: border-box;
+    width: 100%;
     padding: 10px;
     border: none;
     box-shadow: 0 8px 10px #00000014;
@@ -37,18 +37,35 @@ export const Text = styled.textarea`
     height: 200px;
     font-size: 18px;
 `
-export const Todo = styled.div`
+export const Todos = styled.div`
     display: flex;
     grid-column-start: 2;
     flex-direction: column;
-    margin-left: 20px;
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-left: 20px; 
+    ::-webkit-scrollbar {
+        width: 10px;
+        } 
      content{
         box-shadow: 0 8px 10px #00000007;
         padding: 10px;
         display: flex;
         justify-content: space-between;
-        & div:nth-child(odd){
+        
+        div:nth-child(odd){
             max-width: 300px;
         }
+        div:nth-child(even){
+            display: flex;
+            align-items: center;
+            p{
+                margin-right: 20px;
+            }
+    
+        }
     }
+`
+export const Filters = styled.div`
+    grid-column-start: 3;
 `
