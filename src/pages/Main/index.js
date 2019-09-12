@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-import { Principal, Text, Todos, Filters } from './style'
+import { Principal, Text, Todos, Filters, Button, Counter } from './style'
 import ToDo from '../../components/Todo/'
 
 
 export default function Main() {
     const [text, setText] = useState('');
-    const [todos, setTodos] = useState([]);
-    const [all, setAll] = useState('true');
-    const [important, setImportant] = useState(false);
-    const [not_important, setNotImportant] = useState(true);
+    const [todos, setTodos] = useState([])
 
     useEffect(() => {
         let allTodos = localStorage.getItem('todos');
@@ -67,29 +64,46 @@ export default function Main() {
 
         setTodos(JSON.parse(localStorage.getItem('todos')).data);
     }
-    function handleImportante(id, e) {
-        let importantes = todos.filter(todo => todo.important === true)
+    function handleDone(id, e){
+        let todoComplete = todos;
 
-        setTodos(importantes)
-    }
-    function handleAll(id, e) {
+        for(let i = 0; i < todoComplete.length; i++){
+            if(todoComplete[i].id === id){
+                todoComplete[i].done = !todoComplete[i].done;
+                break;
+            }
+        }
+        localStorage.setItem('todos', JSON.stringify({data: todoComplete}));
         setTodos(JSON.parse(localStorage.getItem('todos')).data)
     }
-    function handleNotImportant(id, e) {
-        let importantes = todos.filter(todo => todo.important === false)
 
+    function handleImportante() {
+        const Todos = JSON.parse(localStorage.getItem('todos')).data
+        let importantes = Todos.filter(todo => todo.important === true)
         setTodos(importantes)
+    }
+
+    function handleAll() {
+        setTodos(JSON.parse(localStorage.getItem('todos')).data)
+    }
+
+    function handleNotImportant() {
+        const Todos = JSON.parse(localStorage.getItem('todos')).data
+        let notImportantes = Todos.filter(todo => todo.important === false)
+        setTodos(notImportantes)
+        
     }
     return (
         <Principal>
             <div style={{ gridColumnStart: '1' }}>
                 <h1>Add ToDo</h1>
                 <Text placeholder="Adicione todo" value={text} onChange={handleChange} onKeyUp={handleChange} />
-                <button onClick={handleClick}>Adicionar ToDo</button>
+                <Button onClick={handleClick}>Adicionar ToDo</Button>
 
             </div>
             <Todos>
                 {todos.map(todo => {
+                    console.log(todo.done)
                     return (
                         <ToDo
                             important={todo.important}
@@ -97,16 +111,20 @@ export default function Main() {
                             done={todo.done}
                             id={todo.id}
                             handleImportant={e => handleImportant(todo.id, e)}
+                            handleDone = {e => handleDone(todo.id, e)}
                             key={todo.id} />
                     )
                 })}
             </Todos>
             <Filters>
-                <button onClick = {handleAll}>Todos</button>
-                <button onClick = {handleImportante}>Importantes</button>
-                <button onClick = {handleNotImportant}>Não Importantes</button>
+                <Button onClick = {handleAll}>Todos</Button>
+                <Button onClick = {handleImportante}>Importantes</Button>
+                <Button onClick = {handleNotImportant}>Não Importantes</Button>
 
             </Filters>
+            <Counter>
+                Total de tarefas: {todos.length}
+            </Counter>
         </Principal>
     )
 }

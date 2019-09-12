@@ -1,27 +1,20 @@
 import styled from 'styled-components';
 
 export const Principal = styled.main`
- 
+
+    box-sizing: border-box;
+    position: relative;
     display: grid;
     grid-template-columns: .25fr .50fr .25fr; 
     width: 100%;
-    margin: 0 auto;
+    margin: 50px auto 0 auto;
     max-width: 1000px;
-    border: 1px solid black;
+    border: thin solid #70707020;
     padding: 10px;
     border-radius: 4px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Nunito', Arial, Helvetica, sans-serif;
     button{
-        margin-top: 20px;
-        padding: 20px 10px; 
-        border-radius: 4px;
-        color: #707070;
-        background-color: lightgreen;
-        border: none;
-        box-shadow: 0 10px 10px #00000015;
         float: right;
-        font-weight: bold;
-        cursor: pointer;
         
     }
 `
@@ -68,4 +61,25 @@ export const Todos = styled.div`
 `
 export const Filters = styled.div`
     grid-column-start: 3;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex:1;
+`
+export const Button = styled.button`
+    
+        margin-top: 20px;
+        padding: 20px 10px; 
+        border-radius: 4px;
+        color: #707070;
+        background-color: lightgreen;
+        border: none;
+        box-shadow: 0 10px 10px #00000015;
+        font-weight: bold;
+        cursor: pointer;
+`
+export const Counter = styled.p`
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
 `

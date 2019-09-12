@@ -5,7 +5,7 @@ export const Todo = styled.div`
         padding: 10px;
         display: flex;
         justify-content: space-between;
-        
+
         div:nth-child(odd){
             max-width: 300px;
         }
@@ -14,9 +14,13 @@ export const Todo = styled.div`
             align-items: center;
             p{
                 margin-right: 20px;
+                cursor: pointer;
             }
         }
         p{
-            cursor: pointer;
+            color: ${props => props.important ? "#fff" : "#707070"};
+            
+            text-decoration: ${props => props.important === true ? "underline" : "none"};
+            font-weight: ${props => props.important === true ? "bold" : "normal"};
         }
 `

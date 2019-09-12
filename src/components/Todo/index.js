@@ -21,7 +21,7 @@ export default function ToDo(props) {
                             : "Não importante" 
                     }
                     /></p>
-                    <p>{props.done ? "Completo" : "Incompleto"}</p>
+                    <p onClick = {props.handleDone}>{props.done ? "Completo" : "Incompleto"}</p>
                 </div>
             </Todo>
         </>
